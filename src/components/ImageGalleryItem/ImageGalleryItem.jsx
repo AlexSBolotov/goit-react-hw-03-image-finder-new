@@ -2,7 +2,7 @@ import s from './ImageGalleryItem.module.css';
 import PropTypes from 'prop-types';
 
 export default function ImageGalleryItem({ images, openModal }) {
-  return images.map(({ id, webformatURL, largeImageURL }, idx) => (
+  return images.map(({ webformatURL, largeImageURL }, idx) => (
     <li key={idx} className={s.imageGalleryItem}>
       <img
         onClick={() => openModal(largeImageURL)}
@@ -16,7 +16,6 @@ export default function ImageGalleryItem({ images, openModal }) {
 ImageGalleryItem.propTypes = {
   images: PropTypes.arrayOf(
     PropTypes.shape({
-      id: PropTypes.number.isRequired,
       webformatURL: PropTypes.string.isRequired,
       largeImageURL: PropTypes.string.isRequired,
     })
