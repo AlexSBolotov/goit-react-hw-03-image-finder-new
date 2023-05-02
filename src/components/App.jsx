@@ -19,34 +19,30 @@ export class App extends Component {
     error: null,
   };
 
-  // getSnapshotBeforeUpdate() {
-  //   console.log(document.body.clientHeight);
-  //   return document.body.clientHeight + 1200;
-  // }
+  getSnapshotBeforeUpdate() {
+    return document.body.clientHeight - 286;
+  }
 
   async componentDidUpdate(_, prevState, snapshot) {
-    const { searchQuery, page } = this.state;
+    const { searchQuery, page, images } = this.state;
     if (prevState.page !== page || prevState.searchQuery !== searchQuery) {
-      console.log(this.state.page);
-
-      if (prevState.searchQuery !== searchQuery) {
-        this.setState({ images: [], page: 1 });
-      }
       this.setState({ isLoading: true });
       try {
         const response = await getImages(searchQuery, page);
         this.setState(prev => ({
           images: [...prev.images, ...response.hits],
         }));
-        // window.scrollTo({
-        //   top: snapshot,
-        //   behavior: 'smooth',
-        // });
       } catch (error) {
         this.setState({ error });
       } finally {
         this.setState({ isLoading: false });
       }
+    }
+    if (prevState.images !== images && page !== 1) {
+      window.scrollTo({
+        top: snapshot,
+        behavior: 'smooth',
+      });
     }
   }
 
@@ -57,7 +53,7 @@ export class App extends Component {
     this.setState({ showModal: false, imageURL: '' });
   };
   setQuery = query => {
-    this.setState({ page: 1, searchQuery: query });
+    this.setState({ page: 1, searchQuery: query, images: [] });
   };
   setPage = () => {
     this.setState(prev => ({ page: prev.page + 1 }));

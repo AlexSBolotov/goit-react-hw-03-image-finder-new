@@ -5,7 +5,9 @@ import ImageGalleryItem from 'components/ImageGalleryItem/ImageGalleryItem';
 export default function ImageGallery({ images, openModal }) {
   return (
     <ul className={s.imageGallery}>
-      <ImageGalleryItem images={images} openModal={openModal} />
+      {images.map((image, idx) => (
+        <ImageGalleryItem key={idx} image={image} openModal={openModal} />
+      ))}
     </ul>
   );
 }
